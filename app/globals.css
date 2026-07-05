@@ -1,26 +1,175 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---- Design tokens (Warm & Organic / Amber) ---- */
+@theme {
+  --color-bg: #f6efe3;
+  --color-bg2: #efe6d6;
+  --color-surface: #fffaf0;
+  --color-raise: #f3ead9;
+  --color-ink: #241d14;
+  --color-ink2: #6d5f4b;
+  --color-faint: #a3927a;
+  --color-accent: #cf7a1f;
+  --color-accent-strong: #b0611a;
+  --color-gold: #e6a84c;
+  --color-success: #4a9d5b;
+  --color-on-accent: #fffaf0;
+
+  /* borders / tints expressed as usable color tokens */
+  --color-line: rgba(60, 42, 18, 0.12);
+  --color-line-strong: rgba(60, 42, 18, 0.2);
+  --color-accent-soft: rgba(207, 122, 31, 0.12);
+  --color-accent-line: rgba(207, 122, 31, 0.34);
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+
+  /* shadows */
+  --shadow-card: 0 12px 30px rgba(120, 80, 20, 0.06);
+  --shadow-card2: 0 14px 34px rgba(120, 80, 20, 0.06);
+  --shadow-card-hover: 0 26px 56px rgba(120, 80, 20, 0.14);
+  --shadow-hero: 0 30px 70px rgba(120, 80, 20, 0.16);
+  --shadow-form: 0 20px 46px rgba(120, 80, 20, 0.08);
+  --shadow-btn: 0 10px 26px rgba(207, 122, 31, 0.28);
+  --shadow-btn-hover: 0 16px 38px rgba(207, 122, 31, 0.4);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Decorative fixed radial glows behind everything */
+.glow {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  filter: blur(12px);
+}
+.glow--tr {
+  top: -12vw;
+  right: -8vw;
+  width: min(52vw, 720px);
+  height: min(52vw, 720px);
+  background: radial-gradient(circle, rgba(230, 168, 76, 0.28), transparent 62%);
+}
+.glow--bl {
+  bottom: -10vw;
+  left: -8vw;
+  width: min(48vw, 640px);
+  height: min(48vw, 640px);
+  background: radial-gradient(circle, rgba(207, 122, 31, 0.16), transparent 64%);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent-line);
+  border-radius: 100px;
+  border: 3px solid var(--color-bg2);
+}
+
+/* Organic blob shapes for the hero status card */
+.blob {
+  position: absolute;
+  filter: blur(4px);
+}
+.blob--tr {
+  top: -34px;
+  right: -30px;
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, #e6a84c, #cf7a1f);
+  border-radius: 52% 48% 43% 57% / 55% 46% 54% 45%;
+  opacity: 0.5;
+  animation: floaty 7s ease-in-out infinite;
+}
+.blob--bl {
+  bottom: -28px;
+  left: -26px;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #cf7a1f, #e6a84c);
+  border-radius: 45% 55% 60% 40% / 48% 52% 48% 52%;
+  opacity: 0.35;
+  animation: floaty2 9s ease-in-out infinite;
+}
+
+/* Scroll-reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-1.5deg);
+  }
+}
+@keyframes floaty2 {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(10px) rotate(2deg);
+  }
+}
+
+.fade-up {
+  animation: fadeUp 0.45s ease;
+}
+.pulse-dot {
+  animation: floaty 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .blob--tr,
+  .blob--bl,
+  .fade-up,
+  .pulse-dot {
+    animation: none;
+  }
 }
