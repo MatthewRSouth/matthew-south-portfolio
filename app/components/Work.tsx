@@ -1,45 +1,29 @@
+"use client";
+
+import { useLang } from "../i18n/LanguageContext";
 import Reveal from "./Reveal";
 import SectionLabel from "./SectionLabel";
 
-type Project = {
-  number: string;
-  kind: string;
-  title: string;
-  inProgress?: boolean;
-  problem: string;
-  stack: string[];
-  live: string;
-  repo: string;
-};
-
-const projects: Project[] = [
+// Language-independent project data; kind + problem come from translations by index.
+const projectData = [
   {
     number: "01",
-    kind: "Product · React",
     title: "Hoshida Dispatch",
-    problem:
-      "The school needed parents to submit enrollment applications electronically — safely, since it handles children's information. I built a secure React application that lets parents apply online and pipes submissions and photos straight into Google Docs for staff to review.",
     stack: ["React", "Google APIs", "Vercel"],
     live: "https://dispatch-app-phi.vercel.app/",
     repo: "https://github.com/MatthewRSouth/dispatch-app",
   },
   {
     number: "02",
-    kind: "Personal · React",
     title: "Anichive",
-    problem:
-      "As an anime fan I wanted to see what other people thought of different series. So I built an app where users can search and browse anime and share their opinions — a small, opinionated community catalog.",
     stack: ["React", "REST API", "Vercel"],
     live: "https://anichive.vercel.app/",
     repo: "https://github.com/MatthewRSouth/anichive",
   },
   {
     number: "03",
-    kind: "Product · React + Supabase",
     title: "Hoshida Student Progress",
     inProgress: true,
-    problem:
-      "Teachers needed a way to track each child's progress — both for their own teaching and for parent interviews. I'm building a clean dashboard that gives them a fast, structured way to log and review student progress.",
     stack: ["React", "TypeScript", "Tailwind", "Supabase"],
     live: "https://student-progress-app-eight.vercel.app/",
     repo: "https://github.com/MatthewRSouth/student-progress-app",
@@ -47,15 +31,18 @@ const projects: Project[] = [
 ];
 
 export default function Work() {
+  const { content } = useLang();
+  const { work, labels } = content;
+
   return (
     <section
       id="work"
       className="scroll-mt-24 pb-[clamp(56px,9vw,88px)] pt-[clamp(28px,4vw,44px)]"
     >
-      <SectionLabel number="02" label="Selected work" />
+      <SectionLabel number="02" label={labels.work} />
 
       <div className="mt-[clamp(24px,4vw,40px)] flex flex-col gap-[clamp(20px,3vw,28px)]">
-        {projects.map((p) => (
+        {projectData.map((p, i) => (
           <Reveal
             key={p.number}
             as="article"
@@ -67,11 +54,11 @@ export default function Work() {
                 {p.number}
               </span>
               <span className="text-[12.5px] font-semibold uppercase tracking-[0.06em] text-faint">
-                {p.kind}
+                {work.kinds[i]}
               </span>
               {p.inProgress && (
                 <span className="rounded-full bg-accent-soft px-[11px] py-[4px] text-[12px] font-semibold text-accent-strong">
-                  in progress
+                  {work.inProgress}
                 </span>
               )}
             </div>
@@ -81,7 +68,7 @@ export default function Work() {
             </h3>
 
             <p className="mb-[22px] max-w-[66ch] text-[1.02rem] leading-[1.72] text-ink2">
-              {p.problem}
+              {work.problems[i]}
             </p>
 
             {/* Footer row */}
@@ -104,7 +91,7 @@ export default function Work() {
                   rel="noopener"
                   className="border-b-[1.5px] border-accent-line pb-[2px] text-[14px] font-semibold text-accent-strong transition-colors duration-200 hover:border-accent"
                 >
-                  Live demo ↗
+                  {work.liveDemo}
                 </a>
                 <a
                   href={p.repo}
@@ -112,7 +99,7 @@ export default function Work() {
                   rel="noopener"
                   className="border-b-[1.5px] border-transparent pb-[2px] text-[14px] font-semibold text-ink2 transition-colors duration-200 hover:border-accent-line hover:text-accent-strong"
                 >
-                  GitHub ↗
+                  {work.github}
                 </a>
               </div>
             </div>

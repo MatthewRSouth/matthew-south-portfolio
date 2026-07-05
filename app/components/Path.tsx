@@ -1,35 +1,27 @@
+"use client";
+
+import { useLang } from "../i18n/LanguageContext";
 import Reveal from "./Reveal";
 import SectionLabel from "./SectionLabel";
 
-const entries = [
-  {
-    date: "Apr 2026 — Present",
-    role: "Technical Lead & Developer",
-    org: "Hoshida Dispatch",
-    summary:
-      "Leading the build of the school's secure parent-application platform end to end — architecture, React frontend, and Google Services integration.",
-  },
-  {
-    date: "Feb 2025 — Present",
-    role: "Developer",
-    org: "Hoshida International",
-    summary:
-      "Building internal web tools that help the school run — from enrollment to student-progress tracking — with React, TypeScript, Tailwind and Supabase.",
-  },
-];
+// Org names are proper nouns, kept identical across languages.
+const orgs = ["Hoshida Dispatch", "Hoshida International"];
 
 export default function Path() {
+  const { content } = useLang();
+  const { path, labels } = content;
+
   return (
     <section
       id="path"
       className="scroll-mt-24 pb-[clamp(56px,9vw,88px)] pt-[clamp(28px,4vw,44px)]"
     >
-      <SectionLabel number="03" label="Path" />
+      <SectionLabel number="03" label={labels.path} />
 
       <div className="mt-[clamp(24px,4vw,40px)] flex flex-col gap-[16px]">
-        {entries.map((e) => (
+        {path.entries.map((e, i) => (
           <Reveal
-            key={e.role}
+            key={i}
             className="grid grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] items-start gap-x-[32px] gap-y-[8px] rounded-[22px] border border-line bg-surface px-[clamp(22px,3vw,32px)] py-[24px]"
           >
             {/* Left cell */}
@@ -44,7 +36,7 @@ export default function Path() {
               <h3 className="mb-[2px] mt-[10px] font-display text-[clamp(1.15rem,2.4vw,1.45rem)] font-bold text-ink">
                 {e.role}
               </h3>
-              <p className="text-[14px] font-medium text-ink2">{e.org}</p>
+              <p className="text-[14px] font-medium text-ink2">{orgs[i]}</p>
             </div>
 
             {/* Right cell */}

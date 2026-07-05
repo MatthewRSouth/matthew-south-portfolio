@@ -1,11 +1,11 @@
-const links = [
-  { label: "About", href: "#about" },
-  { label: "Work", href: "#work" },
-  { label: "Path", href: "#path" },
-  { label: "Contact", href: "#contact" },
-];
+"use client";
+
+import { useLang } from "../i18n/LanguageContext";
+import LangToggle from "./LangToggle";
 
 export default function Nav() {
+  const { content } = useLang();
+
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-[rgba(246,239,227,0.78)] backdrop-blur-[14px]">
       <nav className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 px-[clamp(20px,5vw,72px)] py-[18px]">
@@ -20,9 +20,9 @@ export default function Nav() {
           </span>
         </a>
 
-        {/* Links + resume */}
+        {/* Links + toggle + resume */}
         <div className="flex flex-wrap items-center gap-x-[clamp(14px,2.6vw,32px)] gap-y-2">
-          {links.map((link) => (
+          {content.nav.links.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -31,12 +31,13 @@ export default function Nav() {
               {link.label}
             </a>
           ))}
+          <LangToggle />
           <a
             href="/Matthew-South-Resume.pdf"
             download
             className="rounded-full border-[1.5px] border-accent-line px-[18px] py-[9px] text-[14px] font-semibold text-accent-strong transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-on-accent"
           >
-            Resume
+            {content.nav.resume}
           </a>
         </div>
       </nav>

@@ -2,13 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-const PHRASES = [
-  "React + TypeScript",
-  "accessible UIs",
-  "learning Next.js",
-  "shipping real products",
-];
+import { useLang } from "../i18n/LanguageContext";
 
 const osakaFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "Asia/Tokyo",
@@ -19,6 +13,8 @@ const osakaFormatter = new Intl.DateTimeFormat("en-GB", {
 });
 
 export default function StatusCard() {
+  const { content } = useLang();
+  const { status } = content;
   const [osakaTime, setOsakaTime] = useState("");
   const [focusIndex, setFocusIndex] = useState(0);
 
@@ -31,11 +27,11 @@ export default function StatusCard() {
 
   useEffect(() => {
     const rotate = setInterval(
-      () => setFocusIndex((i) => (i + 1) % PHRASES.length),
+      () => setFocusIndex((i) => (i + 1) % status.phrases.length),
       2400,
     );
     return () => clearInterval(rotate);
-  }, []);
+  }, [status.phrases.length]);
 
   return (
     <div className="relative mx-auto w-full max-w-[390px] justify-self-center">
@@ -58,7 +54,7 @@ export default function StatusCard() {
             <p className="font-display text-[1.15rem] font-bold leading-tight text-ink">
               Matthew South
             </p>
-            <p className="text-[13px] text-ink2">Junior Frontend Engineer</p>
+            <p className="text-[13px] text-ink2">{status.title}</p>
           </div>
         </div>
 
@@ -66,7 +62,7 @@ export default function StatusCard() {
 
         {/* Live clock */}
         <div className="mb-[16px] flex items-center justify-between">
-          <span className="text-[13px] text-faint">Local time · Osaka</span>
+          <span className="text-[13px] text-faint">{status.localTime}</span>
           <span
             className="font-display text-[1.05rem] font-semibold text-ink [font-variant-numeric:tabular-nums]"
             suppressHydrationWarning
@@ -77,12 +73,12 @@ export default function StatusCard() {
 
         {/* Rotating "Currently" word */}
         <div className="mb-[20px] flex items-center justify-between">
-          <span className="text-[13px] text-faint">Currently</span>
+          <span className="text-[13px] text-faint">{status.currently}</span>
           <span
-            key={focusIndex}
+            key={`${focusIndex}-${status.phrases[focusIndex]}`}
             className="fade-up text-[14.5px] font-semibold text-accent-strong"
           >
-            {PHRASES[focusIndex]}
+            {status.phrases[focusIndex]}
           </span>
         </div>
 
@@ -93,7 +89,7 @@ export default function StatusCard() {
             aria-hidden="true"
           />
           <span className="text-[13.5px] font-medium text-ink">
-            Open to junior frontend roles
+            {status.open}
           </span>
         </div>
       </div>

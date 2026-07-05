@@ -1,49 +1,56 @@
+"use client";
+
+import { useLang } from "../i18n/LanguageContext";
 import ContactForm from "./ContactForm";
 import Reveal from "./Reveal";
 import SectionLabel from "./SectionLabel";
 
-const socials = [
-  {
-    label: "GITHUB",
-    handle: "@MatthewRSouth",
-    href: "https://github.com/MatthewRSouth",
-  },
-  {
-    label: "LINKEDIN",
-    handle: "in/mrsalt",
-    href: "https://www.linkedin.com/in/mrsalt/",
-  },
-  {
-    label: "EMAIL",
-    handle: "matthewsouthjobs@gmail.com",
-    href: "mailto:matthewsouthjobs@gmail.com",
-  },
-];
-
 export default function Contact() {
+  const { content } = useLang();
+  const { contact, labels } = content;
+
+  const socials = [
+    {
+      label: "GITHUB",
+      handle: "@MatthewRSouth",
+      href: "https://github.com/MatthewRSouth",
+    },
+    {
+      label: "LINKEDIN",
+      handle: "in/mrsalt",
+      href: "https://www.linkedin.com/in/mrsalt/",
+    },
+    {
+      label: contact.emailLabel,
+      handle: "matthewsouthjobs@gmail.com",
+      href: "mailto:matthewsouthjobs@gmail.com",
+    },
+  ];
+
   return (
     <section
       id="contact"
       className="scroll-mt-24 pb-[clamp(64px,10vw,96px)] pt-[clamp(32px,5vw,52px)]"
     >
-      <SectionLabel number="04" label="Contact" />
+      <SectionLabel number="04" label={labels.contact} />
 
       <div className="mt-[clamp(24px,4vw,40px)] grid grid-cols-[repeat(auto-fit,minmax(min(300px,100%),1fr))] items-start gap-[clamp(32px,5vw,64px)]">
         {/* Left column */}
         <Reveal>
           <h2 className="font-display text-[clamp(2.2rem,5vw,3.4rem)] font-bold leading-[1.02] tracking-[-0.03em] text-ink">
-            Let&apos;s build something <span className="text-accent">good.</span>
+            {contact.h2Before}
+            <span className="text-accent">{contact.h2Accent}</span>
+            {contact.h2After}
           </h2>
 
           <p className="mb-[30px] mt-[22px] max-w-[42ch] text-[1.08rem] leading-[1.65] text-ink2">
-            Open to junior frontend roles and freelance builds. Drop a line — I
-            reply fast.
+            {contact.paragraph}
           </p>
 
           <div className="flex flex-col gap-[12px]">
             {socials.map((s) => (
               <a
-                key={s.label}
+                key={s.href}
                 href={s.href}
                 target="_blank"
                 rel="noopener"
