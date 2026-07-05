@@ -21,24 +21,29 @@ export default function Nav() {
         </a>
 
         {/* Links + toggle + resume */}
-        <div className="flex flex-wrap items-center gap-x-[clamp(14px,2.6vw,32px)] gap-y-2">
-          {content.nav.links.map((link) => (
+        <div className="flex flex-wrap items-center gap-x-[clamp(14px,2.6vw,32px)] gap-y-3">
+          <div className="flex flex-wrap items-center gap-x-[clamp(14px,2.6vw,32px)] gap-y-2">
+            {content.nav.links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-[14.5px] font-medium text-ink2 transition-colors duration-200 hover:text-accent-strong"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          {/* Toggle + resume stay paired on one line so they line up on mobile */}
+          <div className="flex items-center gap-[10px]">
+            <LangToggle />
             <a
-              key={link.href}
-              href={link.href}
-              className="text-[14.5px] font-medium text-ink2 transition-colors duration-200 hover:text-accent-strong"
+              href="/Matthew-South-Resume.pdf"
+              download
+              className="rounded-full border-[1.5px] border-accent-line px-[18px] py-[9px] text-[14px] font-semibold text-accent-strong transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-on-accent"
             >
-              {link.label}
+              {content.nav.resume}
             </a>
-          ))}
-          <LangToggle />
-          <a
-            href="/Matthew-South-Resume.pdf"
-            download
-            className="rounded-full border-[1.5px] border-accent-line px-[18px] py-[9px] text-[14px] font-semibold text-accent-strong transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-on-accent"
-          >
-            {content.nav.resume}
-          </a>
+          </div>
         </div>
       </nav>
     </header>
